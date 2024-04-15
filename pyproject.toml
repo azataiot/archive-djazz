@@ -8,7 +8,7 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "django-djazz"
+name = "djazz-cc"
 authors = [{ name = "Azat", email = "to@azat.cc" }]
 readme = "README.md"
 license = { file = "LICENSE" }
