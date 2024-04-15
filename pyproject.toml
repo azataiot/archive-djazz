@@ -4,10 +4,28 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "django-djazz"
-authors = [{name = "Azat", email = "to@azat.cc"}]
+authors = [{ name = "Azat", email = "to@azat.cc" }]
 readme = "README.md"
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 dynamic = ["version", "description"]
+keywords = ["django", "djazz", "rest", "api", "json", "serializer", "django-rest-framework", "drf", "django-rest-framework-json-api", "json-api", "jsonapi", "json-api-serializer", "json-api"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "django",
+    "pillow",
+]
+
+[project.optional-dependencies]
+debug = ["django-debug-toolbar"]
+cli = ["typer"]
 
 [project.urls]
 Home = "https://github.com/azataiot/djazz "
