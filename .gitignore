@@ -2,3 +2,4 @@
 *.py[co]
 .tox/
 __pycache__
+db.sqlite3
