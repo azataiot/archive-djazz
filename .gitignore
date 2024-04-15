@@ -1,0 +1,4 @@
+# Python
+*.py[co]
+.tox/
+__pycache__
