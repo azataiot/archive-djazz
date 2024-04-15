@@ -11,9 +11,22 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import environ  # django-environ
+
+# Django environ setup
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1", "[::1]"]),
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Take environment variables from .env file
+environ.Env.read_env(
+    env_file=BASE_DIR / ".env",
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -22,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@ok-#c29$vsnc@(-a%3ozuk3ovlup97a+-1^*-5c_^x8u=a((&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = []
 
