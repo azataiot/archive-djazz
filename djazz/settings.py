@@ -14,6 +14,8 @@ from pathlib import Path
 import environ  # django-environ
 
 # Django environ setup
+# https://django-environ.readthedocs.io/en/latest/quickstart.html
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
@@ -21,9 +23,11 @@ env = environ.Env(
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Take environment variables from .env file
+
 environ.Env.read_env(
     env_file=BASE_DIR / ".env",
 )
@@ -32,12 +36,14 @@ environ.Env.read_env(
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# Raises Django's ImproperlyConfigured
+# exception if SECRET_KEY not in os.environ
 SECRET_KEY = 'django-insecure-@ok-#c29$vsnc@(-a%3ozuk3ovlup97a+-1^*-5c_^x8u=a((&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 # Application definition
 
@@ -67,9 +73,7 @@ ROOT_URLCONF = 'djazz.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'templates',
-        ],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,10 +92,9 @@ WSGI_APPLICATION = 'djazz.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # read os.environ['DATABASE_URL'] and raises
+    # ImproperlyConfigured exception if not found
+    "default": env.db(),
 }
 
 # Password validation
@@ -126,9 +129,52 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+# Additional locations the staticfiles app will traverse if the FileSystemFinder finder is enabled
+# https://docs.djangoproject.com/en/5.0/ref/settings/#staticfiles-dirs
+
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Djano's site Framework
+# https://docs.djangoproject.com/en/5.0/ref/contrib/sites/
+
+SITE_ID = 1
+
+# DEBUG only settings
+if DEBUG:
+    # Development internal IPs
+    # https://docs.djangoproject.com/en/5.0/ref/settings/#internal-ips
+    import socket  # for docker development
+
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + [
+        "127.0.0.1",
+        "10.0.2.2",
+    ]
+    #
+
+    # DEV apps
+    INSTALLED_APPS += [
+        # django debug toolbar
+        "debug_toolbar",
+    ]
+    #
+
+    # DEV middleware
+    # django-debug-toolbar middleware
+    # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#add-the-middleware
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+
+# Auth
+# https://docs.djangoproject.com/en/5.0/ref/settings/#auth
+AUTH_USER_MODEL = "accounts.User"
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "/accounts/login/"
+LOGOUT_REDIRECT_URL = "/"
