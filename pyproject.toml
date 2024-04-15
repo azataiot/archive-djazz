@@ -1,0 +1,14 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "djazz"
+authors = [{name = "Azat", email = "to@azat.cc"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+dynamic = ["version", "description"]
+
+[project.urls]
+Home = "https://github.com/azataiot/djazz "
+Source = "https://github.com/azataiot/djazz "
