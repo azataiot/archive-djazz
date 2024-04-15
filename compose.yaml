@@ -3,21 +3,52 @@
 # https://docs.docker.com/compose/compose-file/
 # ---
 
+version: '3.8'
 name: djazz
+
 services:
   postgres:
     image: postgres:16-alpine
+    container_name: postgres
     restart: always
     environment:
-      POSTGRES_DB: 'djazz'
-      POSTGRES_USER: 'djazz'
-      POSTGRES_PASSWORD: 'djazz'
+      POSTGRES_DB: djazz
+      POSTGRES_USER: djazz
+      POSTGRES_PASSWORD: djazz
     ports:
       - "5432:5432"
     volumes:
-      - djazz_pg:/var/lib/postgresql/data/
+      - postgres:/var/lib/postgresql/data/
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready", "--host=postgres", "--dbname=$POSTGRES_DB", "--username=$POSTGRES_USER" ]
+
+  pgadmin:
+    depends_on: [ postgres ]
+    profiles: [ debug ]
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: azat@djazz.cc
+      PGADMIN_DEFAULT_PASSWORD: djazz
+    ports:
+      - "5433:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin/
+
+
+  mailpit:
+    profiles: [ debug ]
+    image: axllent/mailpit
+    container_name: mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
   redis:
     image: redis:7-alpine
@@ -27,4 +58,5 @@ services:
 
 
 volumes:
-  djazz_pg:
+  postgres:
+  pgadmin:

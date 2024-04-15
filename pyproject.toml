@@ -38,10 +38,10 @@ classifiers = [
 dependencies = [
     "django",
     "pillow",
+    "django-debug-toolbar",
 ]
 
 [project.optional-dependencies]
-debug = ["django-debug-toolbar"]
 cli = ["typer"]
 
 [project.urls]
