@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 
 # Create your views here.
 
 
 def welcome(request):
-    return render(request, "core/welcome.html")
+    return redirect("coming_soon")
+
+
+def coming_soon(request):
+    return render(request, "core/coming-soon.html")
