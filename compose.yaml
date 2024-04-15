@@ -1,0 +1,25 @@
+# ---
+# Docker Compose for Djazz!
+# https://docs.docker.com/compose/compose-file/
+# ---
+
+name: Djazz
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: 'djazz'
+      POSTGRES_USER: 'djazz'
+      POSTGRES_PASSWORD: 'djazz'
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "--host=postgres", "--dbname=$POSTGRES_DB", "--username=$POSTGRES_USER" ]
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
