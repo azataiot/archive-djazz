@@ -1,0 +1,6 @@
+django
+django-environ
+pillow
+psycopg2-binary
+django-debug-toolbar
+gunicorn

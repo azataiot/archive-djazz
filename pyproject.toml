@@ -39,7 +39,10 @@ classifiers = [
 dependencies = [
     "django",
     "pillow",
+    "psycopg",
+    "django-environ",
     "django-debug-toolbar",
+    "gunicorn",
 ]
 
 [project.optional-dependencies]

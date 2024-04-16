@@ -93,9 +93,14 @@ WSGI_APPLICATION = 'djazz.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    # read os.environ['DATABASE_URL'] and raises
-    # ImproperlyConfigured exception if not found
-    "default": env.db(),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("POSTGRES_DB", default="djazz"),
+        "USER": env("POSTGRES_USER", default="postgres"),
+        "PASSWORD": env("POSTGRES_PASSWORD", default="postgres"),
+        "HOST": "db",
+        "PORT": "5432",
+    }
 }
 
 # Password validation
