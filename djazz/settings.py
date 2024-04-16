@@ -190,9 +190,10 @@ LOGOUT_REDIRECT_URL = "/"
 EMAIL_BACKEND = env(
     "EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
 )
-EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_PORT = env("EMAIL_PORT")
-EMAIL_USE_TLS = env("EMAIL_USE_TLS")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+EMAIL_HOST = env("EMAIL_HOST", default="mail")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="Djazz! <info@djazz.cc>")
+EMAIL_PORT = env("EMAIL_PORT", default=1025)
+EMAIL_USE_TLS = env("EMAIL_USE_TLS", default=False)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+

@@ -1,6 +1,7 @@
 name: djazz
 services:
-  djazz:
+
+  djazz-dev:
     build:
       context: .
     env_file:
@@ -14,6 +15,25 @@ services:
       watch:
         - action: rebuild
           path: .
+    profiles:
+      - development
+
+  djazz:
+    image: ghcr.io/azataiot/djazz:latest
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+    profiles:
+      - test
+      - production
 
   db:
     image: postgres:16-alpine
@@ -32,6 +52,24 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    profiles:
+      - development
+      - test
+      - production
+
+  mail:
+    image: axllent/mailpit
+    restart: always
+    expose:
+      - 8025
+      - 1025
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    profiles:
+      - development
+      - test
 
 
 volumes:
