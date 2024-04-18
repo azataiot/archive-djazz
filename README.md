@@ -73,8 +73,6 @@ EMAIL_HOST_USER=""
 EMAIL_HOST_PASSWORD=""
 ```
 
-
-
 The easiest way to run djazz is using Docker. Make sure you have **Docker installed on your machine**.
 
 ```bash
