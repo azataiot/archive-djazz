@@ -1,3 +1,7 @@
+# ---
+# Djazz Compose file
+# Please refer to the: docs/compose.md for more information
+# ---
 name: djazz
 services:
 
@@ -22,6 +26,8 @@ services:
     image: ghcr.io/azataiot/djazz:latest
     env_file:
       - .env
+    environment:
+      - DEBUG=1
     ports:
       - 8000:8000
     depends_on:
@@ -61,8 +67,8 @@ services:
     image: axllent/mailpit
     restart: always
     expose:
-      - 8025
-      - 1025
+      - 8025:8025
+      - 1025:1025
     environment:
       MP_MAX_MESSAGES: 5000
       MP_SMTP_AUTH_ACCEPT_ANY: 1

@@ -19,7 +19,7 @@ import environ  # django-environ
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1", "[::1]"]),
+    ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1", "0.0.0.0", "[::1]"]),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -158,24 +158,24 @@ if DEBUG:
     # https://docs.djangoproject.com/en/5.0/ref/settings/#internal-ips
     import socket  # for docker development
 
-    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + [
-        "127.0.0.1",
-        "10.0.2.2",
-    ]
-    #
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + [
+    "127.0.0.1",
+    "10.0.2.2",
+]
+#
 
-    # DEV apps
-    INSTALLED_APPS += [
-        # django debug toolbar
-        "debug_toolbar",
-    ]
-    #
+# DEV apps
+INSTALLED_APPS += [
+    # django debug toolbar
+    "debug_toolbar",
+]
+#
 
-    # DEV middleware
-    # django-debug-toolbar middleware
-    # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#add-the-middleware
-    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+# DEV middleware
+# django-debug-toolbar middleware
+# https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#add-the-middleware
+MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
 # Auth
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth
@@ -196,4 +196,3 @@ EMAIL_PORT = env("EMAIL_PORT", default=1025)
 EMAIL_USE_TLS = env("EMAIL_USE_TLS", default=False)
 EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
-
