@@ -33,7 +33,7 @@ for developers looking to jumpstart their projects without the hassle of initial
 - Official website of **Djazz**, for sharing best practices, resources, tutorials etc. will be available soon at https://djazz.cc
 - A robust and well tested django project template, Enterprise projects ready deployment and development.
 - Apps will be coming to this template: 
-  - 'Pages' : An app for handling either static or dynamic apps. Analog to WordPress pages model.
+  - 'Pages' : An app for handling either static or dynamic pages. Analog to WordPress pages model.
   - 'Blog' : A blog app seems necessary for all django projects nowadays, so we are going to embed an blog application.
   - 'Snippets' : A snippets app that gives you quick reference to code examples !
   - 'Accounts' : An application for user authentication and authorization.
