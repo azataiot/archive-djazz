@@ -29,8 +29,22 @@ for developers looking to jumpstart their projects without the hassle of initial
 
 ---
 
+## What is coming ?
+- Official website of **Djazz**, for sharing best practices, resources, tutorials etc. will be available soon at https://djazz.cc
+- A robust and well tested django project template, Enterprise projects ready deployment and development.
+- Apps will be coming to this template: 
+  - 'Pages' : An app for handling either static or dynamic apps. Analog to WordPress pages model.
+  - 'Blog' : A blog app seems necessary for all django projects nowadays, so we are going to embed an blog application.
+  - 'Snippets' : A snippets app that gives you quick reference to code examples !
+  - 'Accounts' : An application for user authentication and authorization.
+- Tools will be coming to this template:
+  - 'Lorem Ipsum' : A Djazz tool to help you quickly mock your data. 
+  - 'String case converter' : To help you with all that string conversion headache. 
+- What else you want ? Request future on [GitHub Issue](https://github.com/azataiot/djazz/issues) or on [Discord](docs/discord.md)!
+
 ## Features
 
+- **Free and Open Source**: This project is completely free and open source !! Check [LICENSE](LICENSE) for details.
 - **Django ^5.0.**: The latest version of Django, the web framework for perfectionists with deadlines.
 - **PostgreSQL**: The world's most advanced open-source relational database.
 - **Powered by Docker**: Dockerized development environment for easy setup and deployment.
