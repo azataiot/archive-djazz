@@ -4,6 +4,9 @@
 # For more help, visit the .dockerignore file reference guide at
 # https://docs.docker.com/go/build-context-dockerignore/
 
+# ******
+# GENERAL
+# ******
 **/.DS_Store
 **/__pycache__
 **/.venv
@@ -32,3 +35,10 @@
 **/values.dev.yaml
 LICENSE
 README.md
+
+# **************
+# DJAZZ SPECIFIC
+# **************
+data/
+docs/
+requirements/**.txt

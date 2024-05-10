@@ -22,11 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
-# djazz urls
-urlpatterns += [
-    path("", include("core.urls")),
-]
-
 # DEBUG only URL patterns
 if settings.DEBUG:
     # django-debug-toolbar
