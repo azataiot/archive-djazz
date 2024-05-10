@@ -5,23 +5,6 @@
 name: djazz
 services:
 
-  djazz-dev:
-    build:
-      context: .
-    env_file:
-      - .env
-    ports:
-      - 8000:8000
-    depends_on:
-      db:
-        condition: service_healthy
-    develop:
-      watch:
-        - action: rebuild
-          path: .
-    profiles:
-      - development
-
   djazz:
     image: ghcr.io/azataiot/djazz:latest
     env_file:
@@ -51,6 +34,8 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-djazz}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
+    ports:
+      - "5432:5432"
     expose:
       - 5432
     healthcheck:
@@ -59,8 +44,7 @@ services:
       timeout: 5s
       retries: 5
     profiles:
-      - development
-      - test
+      - debug
       - production
 
   mail:
@@ -74,8 +58,7 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
     profiles:
-      - development
-      - test
+      - debug
 
 
 volumes:
