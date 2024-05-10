@@ -7,6 +7,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('cms.urls')),
 ]
 
 # DEBUG only URL patterns
