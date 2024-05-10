@@ -7,12 +7,12 @@ from django.db import models
 # Managers
 # ---
 
-class PublishedPostManager(models.Manager):
+class PublishedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status='published')
 
 
-class FeaturedPostManager(models.Manager):
+class FeaturedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status='published', is_featured=True)
 
@@ -22,7 +22,19 @@ class FeaturedPostManager(models.Manager):
 # ---
 
 
-class Post(models.Model):
+class BaseModel(models.Model):
+    title = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250, unique_for_date='published_at')
+    description = models.TextField(max_length=250, blank=True)
+    keywords = models.CharField(max_length=250, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class Post(BaseModel, models.Model):
     STATUS_CHOICES = (
         ('draft', 'Draft'),
         ('published', 'Published'),
@@ -33,22 +45,16 @@ class Post(models.Model):
     categories = models.ManyToManyField('Category', related_name='posts')
     tags = models.ManyToManyField('Tag', related_name='posts')
     # Model fields
-    title = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250, unique_for_date='published_at')
-    description = models.TextField(max_length=250, blank=True)
-    keywords = models.CharField(max_length=250, blank=True)
     content = models.TextField()
     image = models.ImageField(upload_to='posts/%Y%m%d/', blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     is_featured = models.BooleanField(default=False)
 
     # Managers
     objects = models.Manager()  # The default manager.
-    published = PublishedPostManager()  # Custom manager.
-    featured = FeaturedPostManager()  # Custom manager.
+    published = PublishedManager()  # Custom manager.
+    featured = FeaturedManager()  # Custom manager.
 
     class Meta:
         verbose_name = 'post'
@@ -68,20 +74,18 @@ class Post(models.Model):
         pass
 
 
-class Page(models.Model):
+class Page(BaseModel, models.Model):
     STATUS_CHOICES = (
         ('draft', 'Draft'),
         ('published', 'Published'),
     )
-    title = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250, unique=True)
-    description = models.TextField(max_length=250, blank=True)
-    keywords = models.CharField(max_length=250, blank=True)
     content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+
+    # Managers
+    objects = models.Manager()  # The default manager.
+    published = PublishedManager()  # Custom manager.
 
     class Meta:
         verbose_name = 'page'
@@ -96,12 +100,7 @@ class Page(models.Model):
         pass
 
 
-class Category(models.Model):
-    title = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250, unique=True)
-    description = models.TextField(blank=True)
-    keywords = models.CharField(max_length=250, blank=True)
-
+class Category(BaseModel, models.Model):
     class Meta:
         verbose_name = 'category'
         verbose_name_plural = 'categories'
@@ -115,12 +114,7 @@ class Category(models.Model):
         pass
 
 
-class Tag(models.Model):
-    title = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250, unique=True)
-    description = models.TextField(blank=True)
-    keywords = models.CharField(max_length=250, blank=True)
-
+class Tag(BaseModel, models.Model):
     class Meta:
         verbose_name = 'tag'
         verbose_name_plural = 'tags'
