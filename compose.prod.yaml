@@ -6,16 +6,11 @@ name: djazz
 services:
 
   djazz:
-    build:
-      context: ../
-      dockerfile: Dockerfile
-      args:
-        - DEV=1
+    image: ghcr.io/azataiot/djazz:latest
     environment:
-      - DEBUG=1
-      - DB_HOST=db
-    ports:
-      - "8000:8000"
+      - DEBUG=0
+    expose:
+      - 8000
     depends_on:
       db:
         condition: service_healthy
@@ -24,7 +19,7 @@ services:
         - action: rebuild
           path: .
     profiles:
-      - test
+      - production
 
   db:
     image: postgres:16-alpine
@@ -36,8 +31,8 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-djazz}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
-    ports:
-      - "5432:5432"
+    expose:
+      - 5432
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 10s
@@ -45,30 +40,16 @@ services:
       retries: 5
     profiles:
       - debug
-      - test
+      - production
 
   redis:
     image: redis:7.2-alpine
     restart: always
-    ports:
-      - "6379:6379"
+    expose:
+      - 6379
     profiles:
       - debug
-      - test
 
-  mail:
-    image: axllent/mailpit
-    restart: always
-    ports:
-      - 8025:8025
-      - 1025:1025
-    environment:
-      MP_MAX_MESSAGES: 5000
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
-    profiles:
-      - debug
-      - test
 
 
 volumes:

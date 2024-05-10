@@ -5,7 +5,7 @@
 
 PWD=$(dirname "$0")
 MANAGE_PATH=$(realpath "$PWD/../manage.py")
-DOCKER_COMPOSE_PATH=$(realpath "$PWD/../compose.yaml")
+DOCKER_COMPOSE_PATH=$(realpath "$PWD/../docker/compose.dev.yaml")
 
 # Check if the manage.py file exists
 if [ ! -f "$MANAGE_PATH" ]; then

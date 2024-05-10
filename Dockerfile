@@ -1,49 +1,41 @@
-# syntax=docker/dockerfile:1
-# ---
-# Djazz Dockerfile
-# Source: https://github.com/azataiot/djazz
-# ---
-
-ARG PYTHON_VERSION=3.12
-FROM python:${PYTHON_VERSION}-slim as base
-
-# Prevents Python from writing pyc files.
+ARG PYTHON_VERSION=3.12-alpine
+FROM python:${PYTHON_VERSION} as builder
+ARG DEV
+ENV DEV=${DEV:-0}
 ENV PYTHONDONTWRITEBYTECODE=1
-
-# Keeps Python from buffering stdout and stderr to avoid situations where
-# the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
+RUN set -eux; \
+	\
+    apk add --no-cache bash && \
+    pip install --no-cache-dir --no-deps --upgrade pip && \
+    pip install --no-cache-dir pip-tools
 
-WORKDIR /developer
+COPY requirements/base.in /requirements.in
+RUN pip-compile --upgrade --output-file requirements.txt requirements.in && \
+    pip wheel --no-cache-dir --no-deps --wheel-dir /wheels -r requirements.txt
 
-# Create a non-privileged user that the app will run under.
-# See https://docs.docker.com/go/dockerfile-user-best-practices/
-ARG UID=10001
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    appuser
+COPY requirements/dev.in /dev-requirements.in
+RUN set -eux; \
+	\
+    if [ $DEV = 1 ]; then \
+    pip-compile --upgrade --output-file dev-requirements.txt dev-requirements.in && \
+    pip wheel --no-cache-dir --no-deps --wheel-dir /wheels -r dev-requirements.txt ; \
+    fi
 
-# Download dependencies as a separate step to take advantage of Docker's caching.
-# Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
-# Leverage a bind mount to requirements.txt to avoid having to copy them into
-# into this layer.
-RUN --mount=type=cache,target=/root/.cache/pip \
-    --mount=type=bind,source=requirements.txt,target=requirements.txt \
-    python -m pip install -r requirements.txt
 
-# Switch to the non-privileged user to run the application.
-USER appuser
+FROM python:${PYTHON_VERSION} as runner
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+COPY --from=builder /wheels /wheels
+COPY --from=builder /bin/bash /bin/bash
+RUN apk add --no-cache bash && \
+    pip install --no-cache-dir --no-deps /wheels/* && \
+    rm -rf /wheels
 
-# Copy the source code into the container.
-COPY . .
+WORKDIR /djazz
+COPY . /djazz
 
-# Expose the port that the application listens on.
 EXPOSE 8000
+VOLUME /djazz/data
 
-# Run the application.
-CMD python manage.py runserver 0.0.0.0:8000
+CMD ["bash", "./scripts/entrypoint.sh"]
