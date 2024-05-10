@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/azataiot/djazz/">
-    <img src="assets/images/icon-teal-200.png" alt="django-template logo" width="200" height="200">
+    <img src="static/img/icon-teal-200.png" alt="django-template logo" width="200" height="200">
   </a>
 </p>
 <h1 align="center">djazz</h1>
