@@ -1,6 +1,6 @@
 # cms/models.py
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 
 # ---
@@ -35,22 +35,20 @@ class Post(models.Model):
     # Model fields
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, unique_for_date='published_at')
+    description = models.TextField(max_length=250, blank=True)
+    keywords = models.CharField(max_length=250, blank=True)
     content = models.TextField()
     image = models.ImageField(upload_to='posts/%Y%m%d/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
-    # SEO fields
-    seo_title = models.CharField(max_length=250, blank=True)
-    seo_description = models.TextField(blank=True)
-    seo_keywords = models.CharField(max_length=250, blank=True)
-    # Other fields
     is_featured = models.BooleanField(default=False)
 
     # Managers
     objects = models.Manager()  # The default manager.
     published = PublishedPostManager()  # Custom manager.
+    featured = FeaturedPostManager()  # Custom manager.
 
     class Meta:
         verbose_name = 'post'
@@ -77,6 +75,8 @@ class Page(models.Model):
     )
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, unique=True)
+    description = models.TextField(max_length=250, blank=True)
+    keywords = models.CharField(max_length=250, blank=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -97,16 +97,18 @@ class Page(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=250)
+    title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, unique=True)
+    description = models.TextField(blank=True)
+    keywords = models.CharField(max_length=250, blank=True)
 
     class Meta:
         verbose_name = 'category'
         verbose_name_plural = 'categories'
-        ordering = ('name',)
+        ordering = ('title',)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def get_absolute_url(self):
         # TODO: Implement get_absolute_url for Category model.
@@ -114,16 +116,18 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=250)
+    title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, unique=True)
+    description = models.TextField(blank=True)
+    keywords = models.CharField(max_length=250, blank=True)
 
     class Meta:
         verbose_name = 'tag'
         verbose_name_plural = 'tags'
-        ordering = ('name',)
+        ordering = ('title',)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def get_absolute_url(self):
         # TODO: Implement get_absolute_url for Tag model.
