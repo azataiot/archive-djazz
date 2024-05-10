@@ -131,6 +131,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # djazz cms app
+    "cms.apps.CmsConfig"
 ]
 
 # **********
@@ -284,6 +286,11 @@ LOGGING = {
         "level": "DEBUG",
     },
 }
+
+# ******
+# CELERY
+# ******
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://djazz:djazz@localhost:5672")
 
 # *****
 # DEBUG
