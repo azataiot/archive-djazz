@@ -5,25 +5,6 @@
 name: djazz
 services:
 
-  djazz:
-    image: ghcr.io/azataiot/djazz:latest
-    env_file:
-      - .env
-    environment:
-      - DEBUG=1
-    ports:
-      - 8000:8000
-    depends_on:
-      db:
-        condition: service_healthy
-    develop:
-      watch:
-        - action: rebuild
-          path: .
-    profiles:
-      - test
-      - production
-
   db:
     image: postgres:16-alpine
     restart: always
@@ -36,8 +17,6 @@ services:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
     ports:
       - "5432:5432"
-    expose:
-      - 5432
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 10s
@@ -47,10 +26,18 @@ services:
       - debug
       - production
 
+  redis:
+    image: redis:7.2-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    profiles:
+      - debug
+
   mail:
     image: axllent/mailpit
     restart: always
-    expose:
+    ports:
       - 8025:8025
       - 1025:1025
     environment:

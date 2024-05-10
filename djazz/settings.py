@@ -55,7 +55,7 @@ LANGUAGES = [
 # We don't use i18n here, as any internationalization should be done in the frontend.
 USE_I18N = False
 
-ROOT_URLCONF = 'djazz.urls'
+ROOT_URLCONF = "djazz.urls"  # noqa
 
 # Whether to append trailing slashes to URLs.
 APPEND_SLASH = True
@@ -224,11 +224,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "BACKEND": os.environ.get("CACHE_BACKEND", 'django.core.cache.backends.redis.RedisCache'),
+        "LOCATION": os.environ.get("CACHE_LOCATION", 'redis://localhost:6379/1'),
     }
 }
-CACHE_MIDDLEWARE_KEY_PREFIX = ""
-CACHE_MIDDLEWARE_SECONDS = 600
+CACHE_MIDDLEWARE_KEY_PREFIX = "djazz"
+CACHE_MIDDLEWARE_SECONDS = 60 * 15  # 15 minutes
 CACHE_MIDDLEWARE_ALIAS = "default"
 
 # **************
@@ -299,7 +300,7 @@ if DEBUG:
 
     # DEBUG ONLY APPS
     try:
-        import debug_toolbar # noqa
+        import debug_toolbar  # noqa
 
         INSTALLED_APPS += [
             # Append django debug toolbar
