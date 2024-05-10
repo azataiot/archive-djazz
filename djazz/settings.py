@@ -298,11 +298,17 @@ if DEBUG:
     ]
 
     # DEBUG ONLY APPS
-    INSTALLED_APPS += [
-        # Append django debug toolbar
-        "debug_toolbar",
-    ]
+    try:
+        import debug_toolbar # noqa
 
-    # DEBUG ONLY MIDDLEWARE
-    # Insert django debug toolbar middleware at the top
-    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+        INSTALLED_APPS += [
+            # Append django debug toolbar
+            "debug_toolbar",
+        ]
+
+        # DEBUG ONLY MIDDLEWARE
+        # Insert django debug toolbar middleware at the top
+        MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+
+    except ImportError:
+        pass
