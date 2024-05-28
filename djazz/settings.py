@@ -193,15 +193,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Absolute path to the directory static files should be collected to.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = BASE_DIR / "data/static"
+STATIC_ROOT = BASE_DIR / "static"
 
 # URL that handles the static files served from STATIC_ROOT.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
-
-# Additional locations the staticfiles app will traverse if the FileSystemFinder finder is enabled
-# https://docs.djangoproject.com/en/5.0/ref/settings/#staticfiles-dirs
-STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # *****
 # MEDIA
@@ -209,7 +205,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = BASE_DIR / "data/media"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # URL that handles the media served from MEDIA_ROOT.
 # Examples: "http://example.com/media/", "http://media.example.com/"
