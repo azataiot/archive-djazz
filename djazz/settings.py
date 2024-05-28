@@ -123,7 +123,7 @@ EMAIL_TIMEOUT = os.environ.get("EMAIL_TIMEOUT", None)
 # ****
 
 INSTALLED_APPS = [
-    # djazz accounts app (custom user model)
+    # djazz accounts app (custom user model, must be first in the list)
     'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -132,7 +132,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # djazz cms app
-    "cms.apps.CmsConfig"
+    "cms.apps.CmsConfig",
+    # 3rd party apps
+    "corsheaders",
+    "oauth2_provider",
 ]
 
 # **********
@@ -140,6 +143,10 @@ INSTALLED_APPS = [
 # **********
 
 MIDDLEWARE = [
+    # django-cors-headers
+    # https://github.com/adamchainz/django-cors-headers
+    'corsheaders.middleware.CorsMiddleware',
+    # django
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -191,15 +198,17 @@ AUTH_PASSWORD_VALIDATORS = [
 # STATIC
 # ******
 
+# Additional locations the staticfiles app will traverse if the FileSystemFinder finder is enabled
+# https://docs.djangoproject.com/en/5.0/ref/settings/#staticfiles-dirs
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# URL that handles the static files served from STATIC_ROOT.
+# Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
-if DEBUG:
-    # URL that handles the static files served from STATIC_ROOT.
-    # Example: "http://example.com/static/", "http://static.example.com/"
-    STATICFILES_DIRS = [BASE_DIR / "static"]
-else:
-    # Absolute path to the directory static files should be collected to.
-    # Example: "/var/www/example.com/static/"
-    STATIC_ROOT = BASE_DIR / "static"
+
+# Absolute path to the directory static files should be collected to.
+# Example: "/var/www/example.com/static/"
+STATIC_ROOT = BASE_DIR / "data/static"
 
 # *****
 # MEDIA
@@ -207,7 +216,7 @@ else:
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = BASE_DIR / "data/media"
 
 # URL that handles the media served from MEDIA_ROOT.
 # Examples: "http://example.com/media/", "http://media.example.com/"
@@ -238,7 +247,7 @@ CACHE_MIDDLEWARE_ALIAS = "default"
 
 AUTH_USER_MODEL = "accounts.User"
 AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
-LOGIN_URL = "/accounts/login/"
+LOGIN_URL = "/admin/login/"
 LOGIN_REDIRECT_URL = "/accounts/profile/"
 LOGOUT_REDIRECT_URL = None
 
@@ -285,9 +294,13 @@ LOGGING = {
     },
 }
 
+# // THIRD PARTY APPS //
+# ^^^^^^^^^^^^^^^^^^^^^^
+
 # ******
 # CELERY
 # ******
+
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://djazz:djazz@localhost:5672")
 
 # *****
@@ -319,3 +332,10 @@ if DEBUG:
 
     except ImportError:
         pass
+
+# *******************
+# DJANGO-CORS-HEADERS
+# *******************
+
+# TODO: Set this to your domain in production
+CORS_ORIGIN_ALLOW_ALL = True

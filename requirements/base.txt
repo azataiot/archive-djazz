@@ -7,11 +7,25 @@
 amqp==5.2.0
     # via kombu
 asgiref==3.8.1
-    # via django
+    # via
+    #   django
+    #   django-cors-headers
 billiard==4.2.0
     # via celery
+boto3==1.34.113
+    # via django-storages
+botocore==1.34.113
+    # via
+    #   boto3
+    #   s3transfer
 celery==5.4.0
     # via -r requirements/base.in
+certifi==2024.2.2
+    # via requests
+cffi==1.16.0
+    # via cryptography
+charset-normalizer==3.3.2
+    # via requests
 click==8.1.7
     # via
     #   celery
@@ -24,12 +38,34 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
+cryptography==42.0.7
+    # via jwcrypto
 django==5.0.6
+    # via
+    #   -r requirements/base.in
+    #   django-cors-headers
+    #   django-oauth-toolkit
+    #   django-storages
+django-cors-headers==4.3.1
+    # via -r requirements/base.in
+django-oauth-toolkit==2.4.0
+    # via -r requirements/base.in
+django-storages[s3]==1.14.3
     # via -r requirements/base.in
 gunicorn==22.0.0
     # via -r requirements/base.in
+idna==3.7
+    # via requests
+jmespath==1.0.1
+    # via
+    #   boto3
+    #   botocore
+jwcrypto==1.5.6
+    # via django-oauth-toolkit
 kombu==5.3.7
     # via celery
+oauthlib==3.2.2
+    # via django-oauth-toolkit
 packaging==24.0
     # via gunicorn
 pillow==10.3.0
@@ -38,14 +74,30 @@ prompt-toolkit==3.0.43
     # via click-repl
 psycopg2-binary==2.9.9
     # via -r requirements/base.in
+pycparser==2.22
+    # via cffi
 python-dateutil==2.9.0.post0
-    # via celery
+    # via
+    #   botocore
+    #   celery
+pytz==2024.1
+    # via django-oauth-toolkit
+requests==2.32.2
+    # via django-oauth-toolkit
+s3transfer==0.10.1
+    # via boto3
 six==1.16.0
     # via python-dateutil
 sqlparse==0.5.0
     # via django
+typing-extensions==4.12.0
+    # via jwcrypto
 tzdata==2024.1
     # via celery
+urllib3==2.2.1
+    # via
+    #   botocore
+    #   requests
 vine==5.1.0
     # via
     #   amqp
