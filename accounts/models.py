@@ -21,4 +21,4 @@ class User(AbstractUser):
     # First and last name do not cover name patterns around the globe.
     # also, we do not want to have user first and last name
     # unless it is necessary later for certification.
-    name = models.CharField(blank=True, max_length=255)
+    fullname = models.CharField(blank=True, max_length=255)

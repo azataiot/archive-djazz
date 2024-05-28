@@ -65,7 +65,7 @@ WSGI_APPLICATION = 'djazz.wsgi.application'
 # A secret key for this particular Django installation. Used in secret-key
 # hashing algorithms. Set this in your settings, or Django will complain
 # loudly.
-SECRET_KEY = os.environ.get("SECRET_KEY", 'djazz-@ok-#c29$2024@(-a%3ozuk3ovlup97a+-1^*-5c_^x8u=a((&')
+SECRET_KEY = os.environ.get("SECRET_KEY", 'djazz-cc@not-secure-#c29$2024@(-a%3ozuk3ovlup97a+-1^*-5c_^x8u=a((&')
 
 SITE_ID = 1
 
@@ -76,7 +76,7 @@ SITE_ID = 1
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME", "djazz"),
+        "NAME": os.environ.get("DB_NAME", "postgres"),
         "USER": os.environ.get("DB_USER", "postgres"),
         "PASSWORD": os.environ.get("DB_PASSWORD", "postgres"),
         "HOST": os.environ.get("DB_HOST", "localhost"),
