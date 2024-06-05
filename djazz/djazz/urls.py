@@ -7,8 +7,6 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # OAuth2 provider
-    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     # djazz CMS
     path('', include('cms.urls')),
 ]

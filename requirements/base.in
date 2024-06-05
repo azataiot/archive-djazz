@@ -1,7 +1,6 @@
 celery
 django
 django-cors-headers
-django-oauth-toolkit
 django-storages[s3]
 gunicorn
 pillow

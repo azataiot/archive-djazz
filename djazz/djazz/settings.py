@@ -135,7 +135,6 @@ INSTALLED_APPS = [
     "cms.apps.CmsConfig",
     # 3rd party apps
     "corsheaders",
-    "oauth2_provider",
 ]
 
 # **********
