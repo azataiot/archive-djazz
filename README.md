@@ -21,7 +21,7 @@ A ready-to-use Django project tailored for practical, real-world applications, d
 settings and industry best practices built-in, ensuring a streamlined development process right out of the box. Ideal
 for developers looking to jumpstart their projects without the hassle of initial setup.
 
-**NOTE:** THIS PROJECT IS STILL IN DEVELOPMENT AND NOT YET READY FOR PRODUCTION USE.
+**NOTE:** _THIS PROJECT IS STILL IN DEVELOPMENT AND NOT YET READY FOR PRODUCTION USE._
 
 ---
 
